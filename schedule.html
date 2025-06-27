@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciao's Web Blog</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        /* Schedule Timeline Styles */
+        .schedule-section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .schedule-container {
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        /* Timeline line - REMOVED FOR MOBILE FIRST */
+        .timeline-line {
+            display: none; /* Hide the timeline line */
+        }
+
+        .day-section {
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .day-header {
+            text-align: left; /* Align day header to left for mobile */
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 5;
+            padding-left: 60px; /* Adjust padding for marker */
+        }
+
+        .day-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .day-date {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .day-marker {
+            position: absolute;
+            left: 30px; /* Position day marker to the left */
+            top: 50%; /* Center vertically relative to day-header */
+            transform: translateY(-50%); /* Adjust for vertical centering */
+            width: 20px;
+            height: 20px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 4px solid var(--bg-primary);
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .schedule-events {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .schedule-event {
+            display: flex;
+            align-items: center;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.6s ease-out forwards;
+            flex-direction: row !important; /* Ensure all events align left */
+            margin-left: 60px; /* Space for dots and connectors */
+            z-index: 2; /* Ensure event content is above any residual elements */
+        }
+
+        .schedule-event:nth-child(even) {
+            flex-direction: row !important; /* Override row-reverse */
+        }
+
+        .schedule-event:nth-child(1) { animation-delay: 0.1s; }
+        .schedule-event:nth-child(2) { animation-delay: 0.2s; }
+        .schedule-event:nth-child(3) { animation-delay: 0.3s; }
+        .schedule-event:nth-child(4) { animation-delay: 0.4s; }
+        .schedule-event:nth-child(5) { animation-delay: 0.5s; }
+        .schedule-event:nth-child(6) { animation-delay: 0.6s; }
+
+        .event-time {
+            width: 120px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .time-display {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-size: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-connector {
+            width: 50px; /* Reduced width for mobile */
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+            position: relative;
+            z-index: 2;
+        }
+
+        .schedule-event:nth-child(even) .event-connector {
+            background: linear-gradient(90deg, var(--accent-primary), transparent); /* Ensure consistent direction */
+        }
+
+        .event-dot {
+            position: absolute;
+            left: -30px; /* Position dot relative to .schedule-event and align with day-marker */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+        }
+
+        .event-content {
+            flex: 1;
+            max-width: none; /* Allow full width */
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .event-content:hover::before {
+            opacity: 1;
+        }
+
+        .event-content:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--accent-primary);
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-location {
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .event-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .event-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            opacity: 0.3;
+        }
+
+        /* Leisure days styling */
+        .leisure-day .day-title {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .leisure-day .day-marker {
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+        }
+
+        .leisure-day .time-display {
+            color: #ff6b6b;
+        }
+
+        .leisure-day .event-dot {
+            background: #ff6b6b;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+        }
+
+        .leisure-day .event-connector {
+            background: linear-gradient(90deg, #ff6b6b, transparent);
+        }
+
+        .leisure-day .schedule-event:nth-child(even) .event-connector {
+            background: linear-gradient(90deg, #ff6b6b, transparent); /* Ensure consistent direction */
+        }
+
+        .leisure-day .event-location {
+            color: #ff6b6b;
+        }
+
+        .leisure-day .event-icon {
+            color: #ff6b6b;
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .day-header {
+                padding-left: 60px;
+            }
+            .day-marker {
+                left: 30px;
+            }
+            .schedule-event {
+                margin-left: 60px;
+                flex-direction: row !important; /* Ensure no row-reverse */
+            }
+            .schedule-event:nth-child(even) {
+                flex-direction: row !important; /* Ensure no row-reverse */
+            }
+            .event-dot {
+                left: -30px; /* Align to the left edge of schedule-event's margin */
+            }
+            .event-time {
+                width: 100px;
+            }
+
+            .time-display {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .event-connector {
+                width: 50px;
+            }
+
+            .event-content {
+                max-width: none;
+                flex: 1;
+            }
+
+            .day-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .schedule-section {
+                padding: 4rem 1rem;
+            }
+
+            .day-title {
+                font-size: 1.8rem;
+            }
+
+            .event-content {
+                padding: 1.5rem;
+            }
+
+            .event-title {
+                font-size: 1.1rem;
+            }
+
+            .schedule-event {
+                margin-left: 50px; /* Further reduce margin for smaller screens */
+            }
+
+            .event-dot {
+                left: -25px; /* Adjust dot position accordingly */
+            }
+
+            .event-connector {
+                width: 40px; /* Adjust connector width */
+            }
+
+            .event-time {
+                width: 90px; /* Adjust time width */
+            }
+        }
+
+        /* Specific styles for 320px screen width */
+        @media (max-width: 320px) {
+            .schedule-section {
+                padding: 3rem 0.5rem;
+            }
+            .day-title {
+                font-size: 1.6rem;
+            }
+            .day-date {
+                font-size: 1rem;
+            }
+            .day-header {
+                padding-left: 45px; /* Adjust padding for very small screens */
+            }
+            .day-marker {
+                left: 20px; /* Adjust marker position */
+            }
+            .schedule-event {
+                margin-left: 45px; /* Smallest margin for event cards */
+            }
+            .event-dot {
+                left: -20px; /* Adjust dot position for smallest screens */
+                width: 10px; /* Slightly smaller dot */
+                height: 10px;
+            }
+            .event-connector {
+                width: 30px; /* Smallest connector width */
+            }
+            .event-time {
+                width: 80px; /* Smallest time width */
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+            .event-content {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+            .event-title {
+                font-size: 1rem;
+            }
+            .event-location, .event-description {
+                font-size: 0.85rem;
+            }
+            .event-icon {
+                font-size: 1.2rem;
+                top: 0.8rem;
+                right: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="nav-logo">BSCS Tour 2025</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="speakers.html" class="nav-link">Speakers</a></li>
+                <li class="nav-item"><a href="venue.html" class="nav-link">Venue</a></li>
+                <li class="nav-item"><a href="schedule.html" class="nav-link active">Schedules</a></li>
+                <li class="nav-item">
+                    <button id="theme-switcher" class="theme-button">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+    
+    <div id="particles-js"></div>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">8-Day Itinerary</h1>
+                <p class="creator-name">Complete Schedule & Timeline</p>
+                <a href="#schedule" class="cta-button">View Schedule</a>
+            </div>
+        </section>
+
+        <section id="schedule" class="schedule-section">
+            <h2 class="section-title animate-on-scroll">Our Journey Timeline</h2>
+            
+            <div class="schedule-container">
+                <div class="timeline-line"></div> <div class="day-section">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 1</h3>
+                        <p class="day-date">June 9, 2025 • Monday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">8:25 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-plane-arrival event-icon"></i>
+                                <h4 class="event-title">Arrival in Manila</h4>
+                                <p class="event-location">Manila, Philippines</p>
+                                <p class="event-description">Arrival in Manila via flight.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">9:45 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-hotel event-icon"></i>
+                                <h4 class="event-title">Check-in @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Check-in and settle into the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Lunch @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Lunch at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">1:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-city event-icon"></i>
+                                <h4 class="event-title">CITY TOUR: Intramuros. Fort Santiago Walking Tour, Mall of Asia</h4>
+                                <p class="event-location">Intramuros, Fort Santiago, Mall of Asia</p>
+                                <p class="event-description">Explore historical sites and enjoy leisure time at the mall.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-mug-hot event-icon"></i>
+                                <h4 class="event-title">Dinner @ DJM Dormitory / Rest</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Dinner and rest at the dormitory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 2</h3>
+                        <p class="day-date">June 10, 2025 • Tuesday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Breakfast at the dormitory.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Proceed to Pasig City</h4>
+                                <p class="event-location">Pasig City</p>
+                                <p class="event-description">Travel to Pasig City for company visits.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">8:30 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-building event-icon"></i>
+                                <h4 class="event-title">Visit: FOUNDEVER PHILIPPINES</h4>
+                                <p class="event-location">Foundever Philippines</p>
+                                <p class="event-description">Company visit to Foundever Philippines.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-box event-icon"></i>
+                                <h4 class="event-title">Pack Lunch</h4>
+                                <p class="event-location">On the go</p>
+                                <p class="event-description">Lunch will be packed for convenience.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">1:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fab fa-google event-icon"></i>
+                                <h4 class="event-title">Visit: GOOGLE PHILIPPINES</h4>
+                                <p class="event-location">Google Philippines</p>
+                                <p class="event-description">Company visit to Google Philippines.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Dinner @ DJM Dormitory / Rest</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Dinner and rest at the dormitory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 3</h3>
+                        <p class="day-date">June 11, 2025 • Wednesday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Breakfast at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Proceed BGC</h4>
+                                <p class="event-location">Bonifacio Global City</p>
+                                <p class="event-description">Travel to Bonifacio Global City.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-headset event-icon"></i>
+                                <h4 class="event-title">Visit: TELEPERFORMANCE PHILIPPINES</h4>
+                                <p class="event-location">Teleperformance Philippines</p>
+                                <p class="event-description">Company visit to Teleperformance Philippines.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-box event-icon"></i>
+                                <h4 class="event-title">Pack Lunch</h4>
+                                <p class="event-location">On the go</p>
+                                <p class="event-description">Lunch will be packed for convenience.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">1:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-building event-icon"></i>
+                                <h4 class="event-title">Visit: KROLL.LAB PHILIPPINES</h4>
+                                <p class="event-location">Kroll.Lab Philippines</p>
+                                <p class="event-description">Company visit to Kroll.Lab Philippines.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Dinner @ DJM Dormitory / Rest</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Dinner and rest at the dormitory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 4</h3>
+                        <p class="day-date">June 12, 2025 • Thursday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Breakfast at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Proceed to</h4>
+                                <p class="event-location">Unknown Location</p>
+                                <p class="event-description">Proceeding to an undisclosed location.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">8:30 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-university event-icon"></i>
+                                <h4 class="event-title">Visit: ASIA DEVELOPMENT BANK (ADB) c/o CXC</h4>
+                                <p class="event-location">ADB</p>
+                                <p class="event-description">Company visit to Asia Development Bank.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">11:30 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Lunch @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Lunch at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Proceed to Eastwood</h4>
+                                <p class="event-location">Eastwood</p>
+                                <p class="event-description">Travel to Eastwood.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">1:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-laptop-code event-icon"></i>
+                                <h4 class="event-title">Visit: MICROSOURCING</h4>
+                                <p class="event-location">MicroSourcing</p>
+                                <p class="event-description">Company visit to MicroSourcing.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Dinner @ DJM Dormitory / Rest</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Dinner and rest at the dormitory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section leisure-day">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 5</h3>
+                        <p class="day-date">June 13, 2025 • Friday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:30 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Breakfast at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">8:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Proceed to Tagaytay</h4>
+                                <p class="event-location">Tagaytay</p>
+                                <p class="event-description">Travel to Tagaytay.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">9:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-cloud-sun event-icon"></i>
+                                <h4 class="event-title">SKY RANCH (If Weather Permits)</h4>
+                                <p class="event-location">Sky Ranch, Tagaytay</p>
+                                <p class="event-description">Enjoy the attractions at Sky Ranch, weather permitting.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-box event-icon"></i>
+                                <h4 class="event-title">Pack Lunch</h4>
+                                <p class="event-location">On the go</p>
+                                <p class="event-description">Lunch will be packed for convenience.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">2:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Back to Manila</h4>
+                                <p class="event-location">Manila</p>
+                                <p class="event-description">Travel back to Manila.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Dinner @ DJM Dormitory / Rest</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Dinner and rest at the dormitory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section leisure-day">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 6</h3>
+                        <p class="day-date">June 14, 2025 • Saturday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">1:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-bus event-icon"></i>
+                                <h4 class="event-title">Proceed to Baguio City</h4>
+                                <p class="event-location">Baguio City</p>
+                                <p class="event-description">Overnight travel to Baguio City.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-map-marked-alt event-icon"></i>
+                                <h4 class="event-title">Estimated Time of Arrival in Baguio City & City Tour</h4>
+                                <p class="event-location">Baguio City (Strawberry Farm, Chinese Bell Church)</p>
+                                <p class="event-description">Arrival in Baguio and start of city tour, including Strawberry Farm and Chinese Bell Church.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">8:30 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ Hotel & Philippine Military Academy</h4>
+                                <p class="event-location">Hotel & Philippine Military Academy</p>
+                                <p class="event-description">Breakfast at the hotel followed by a visit to the Philippine Military Academy.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Lunch @ Prince Plaza Hotel / Check-in</h4>
+                                <p class="event-location">Prince Plaza Hotel</p>
+                                <p class="event-description">Lunch and check-in at Prince Plaza Hotel.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">2:00 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-tree event-icon"></i>
+                                <h4 class="event-title">Continuation Baguio Tour</h4>
+                                <p class="event-location">Mines View Park, Mansion House, Burnham Park</p>
+                                <p class="event-description">Continue the Baguio tour, visiting Mines View Park, Mansion House, and Burnham Park.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:30 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Dinner @ Prince Plaza Hotel / Rest</h4>
+                                <p class="event-location">Prince Plaza Hotel</p>
+                                <p class="event-description">Dinner and rest at Prince Plaza Hotel.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section leisure-day">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 7</h3>
+                        <p class="day-date">June 15, 2025 • Sunday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ Prince Plaza Hotel & Freehours</h4>
+                                <p class="event-location">Prince Plaza Hotel (Maharlika Shopping Center & SM Baguio)</p>
+                                <p class="event-description">Breakfast at the hotel, followed by free time for shopping at Maharlika Shopping Center & SM Baguio.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">11:00 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Lunch @ Prince Plaza Hotel</h4>
+                                <p class="event-location">Prince Plaza Hotel</p>
+                                <p class="event-description">Lunch at Prince Plaza Hotel.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-hotel event-icon"></i>
+                                <h4 class="event-title">Check-out Prince Plaza Hotel & Back to Manila</h4>
+                                <p class="event-location">Prince Plaza Hotel & Manila</p>
+                                <p class="event-description">Check-out from the hotel and travel back to Manila.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:00 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-clock event-icon"></i>
+                                <h4 class="event-title">Estimated time of arrival in Manila</h4>
+                                <p class="event-location">Manila</p>
+                                <p class="event-description">Estimated arrival time back in Manila.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">7:00 P.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Dinner @ DJM Dormitory / Rest</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Dinner and rest at the dormitory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="day-section leisure-day">
+                    <div class="day-header">
+                        <h3 class="day-title">Day 8</h3>
+                        <p class="day-date">June 16, 2025 • Monday</p>
+                        <div class="day-marker"></div>
+                    </div>
+                    
+                    <div class="schedule-events">
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">6:30 A.M.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-coffee event-icon"></i>
+                                <h4 class="event-title">Breakfast @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Breakfast at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-utensils event-icon"></i>
+                                <h4 class="event-title">Lunch @ DJM Dormitory</h4>
+                                <p class="event-location">DJM Dormitory</p>
+                                <p class="event-description">Lunch at the dormitory.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">12:00 N.N.</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-plane-departure event-icon"></i>
+                                <h4 class="event-title">Check-out DJM Dormitory / Proceed to the Airport</h4>
+                                <p class="event-location">DJM Dormitory & Airport</p>
+                                <p class="event-description">Check-out from the dormitory and proceed to the airport for departure.</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-event">
+                            <div class="event-time">
+                                <div class="time-display">END OF TOUR</div>
+                            </div>
+                            <div class="event-connector">
+                                <div class="event-dot"></div>
+                            </div>
+                            <div class="event-content">
+                                <i class="fas fa-flag-checkered event-icon"></i>
+                                <h4 class="event-title">Departure for Zamboanga City</h4>
+                                <p class="event-location">Zamboanga City</p>
+                                <p class="event-description">Departure flight to Zamboanga City, concluding the tour.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h4>BSCS Tour 2025</h4>
+                <p>Documenting our exploration of the tech industry's leading innovators.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="speakers.html">Speakers</a></li>
+                    <li><a href="venue.html">Venue</a></li>
+                    <li><a href="schedule.html">Schedules</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Connect With Me</h4>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f">acebook</i></a>
+                <a href="#" aria-label="LinkedIn">Linked<i class="fab fa-linkedin-in"></i></a>
+            </div>
+             <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>Email: hallasgogerby@gmail.com</p>
+                <p>Phone: +63 956 2307 646</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 WMSU BSCS. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+    <a href="#" class="back-to-top" aria-label="Back to top">↑</a>
+</body>
+</html>

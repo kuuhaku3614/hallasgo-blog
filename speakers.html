@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciao's Web Blog</title>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="speakers.css">
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="nav-logo">BSCS Tour 2025</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="speakers.html" class="nav-link active">Speakers</a></li>
+                <li class="nav-item"><a href="venue.html" class="nav-link">Venue</a></li>
+                <li class="nav-item"><a href="schedule.html" class="nav-link">Schedules</a></li>
+                <li class="nav-item">
+                    <button id="theme-switcher" class="theme-button">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+    
+    <div id="particles-js"></div>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Industry Leaders</h1>
+                <p class="hero-subtitle">Meet our exceptional speakers</p>
+            </div>
+        </section>
+
+        <section class="speakers-section">
+            <div class="section-intro animate-on-scroll">
+                <h2>Visionary Speakers Who Shaped Our Journey</h2>
+                <p>Throughout our first 3-day exploration, we had the privilege of learning from industry pioneers and thought leaders who shared their expertise, insights, and passion for technology innovation.</p>
+            </div>
+
+            <div class="speakers-grid">
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/carlo.jpg" alt="Carlo Quezon">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Foundever</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Carlo Quezon</h3>
+                        <p class="speaker-title">Recruitment Manager</p>
+                        <p class="speaker-company">Foundever</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Recruitment</span>
+                            <span class="skill-tag">Talent Acquisition</span>
+                            <span class="skill-tag">Human Resources</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/yves.jpg" alt="Yves Gonzales">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Google</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Yves Gonzales</h3>
+                        <p class="speaker-title">Head of Government Affairs and Public Policy</p>
+                        <p class="speaker-company">Google Philippines</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Government Affairs</span>
+                            <span class="skill-tag">Public Policy</span>
+                            <span class="skill-tag">Stakeholder Engagement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/default.jpg" alt="Beatrice Grace Bonjibod">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Teleperformance</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Beatrice Grace Bonjibod</h3>
+                        <p class="speaker-title">Brand Marketing Specialist</p>
+                        <p class="speaker-company">Teleperformance</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Brand Marketing</span>
+                            <span class="skill-tag">Campaign Management</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/ralph.jpg" alt="Michael Chen">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Kollab</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Ralph Vincent Regalado</h3>
+                        <p class="speaker-title"> Chief Scientist and Head of AI</p>
+                        <p class="speaker-company">Kollab</p>
+                        
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Machine Learning (ML)</span>
+                            <span class="skill-tag">Artificial Intelligence (AI) Solutions Development</span>
+                            <span class="skill-tag">Research and Development (R&D) in AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/calma.webp" alt="Jazmine Calma">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Kollab</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Jazmine Calma</h3>
+                        <p class="speaker-title">Senior Engineer for Quality Assurance</p>
+                        <p class="speaker-company">Kollab</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Quality Assurance (QA)</span>
+                            <span class="skill-tag">Software Testing</span>
+                            <span class="skill-tag">Cloud Functions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/toni.jpg" alt="Toni-Jan Keith Monserrat">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Kollab</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Toni-Jan Keith Monserrat</h3>
+                        <p class="speaker-title">CTO</p>
+                        <p class="speaker-company">Kollab</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Cloud Architecture</span>
+                            <span class="skill-tag">Artificial Intelligence (AI)</span>
+                            <span class="skill-tag">Web Performance</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/peter.jpg" alt="Peter Fizelle">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Asian Development Bank</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Peter Fizelle</h3>
+                        <p class="speaker-title">Chief Information Security Officer (CISO)</p>
+                        <p class="speaker-company">Asian Development Bank</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">Information Security</span>
+                            <span class="skill-tag">Cybersecurity</span>
+                            <span class="skill-tag">Risk Management</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/mat.jpg" alt="Matt Farley">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">Asian Development Bank</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Matt Farley</h3>
+                        <p class="speaker-title">Director, Infrastructure and Technology Department</p>
+                        <p class="speaker-company">Asian Development Bank</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">IT Infrastructure</span>
+                            <span class="skill-tag">Digital Transformation</span>
+                            <span class="skill-tag">Technology Leadership</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speaker-card animate-on-scroll">
+                    <div class="speaker-image">
+                        <img src="uploads/hidi.jpg" alt="Haidee Enriquez">
+                        <div class="speaker-overlay"></div>
+                        <div class="company-badge">MicroSourcing</div>
+                    </div>
+                    <div class="speaker-content">
+                        <h3 class="speaker-name">Haidee Enriquez</h3>
+                        <p class="speaker-title">Chief Executive Officer</p>
+                        <p class="speaker-company">MicroSourcing & Beepo</p>
+                        <div class="speaker-skills">
+                            <span class="skill-tag">BPO Leadership</span>
+                            <span class="skill-tag">Offshore Operations Management</span>
+                            <span class="skill-tag">Talent Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+        <footer id="contact" class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h4>BSCS Tour 2025</h4>
+                <p>Documenting our exploration of the tech industry's leading innovators.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="speakers.html">Speakers</a></li>
+                    <li><a href="venue.html">Venue</a></li>
+                    <li><a href="schedule.html">Schedules</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Connect With Me</h4>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f">acebook</i></a>
+                <a href="#" aria-label="LinkedIn">Linked<i class="fab fa-linkedin-in"></i></a>
+            </div>
+             <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>Email: hallasgogerby@gmail.com</p>
+                <p>Phone: +63 956 2307 646</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 WMSU BSCS. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <a href="#" class="back-to-top" aria-label="Back to top">↑</a>
+
+    <div id="day1-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Day 1: Agile Methodologies & Cloud Infrastructure</h2>
+            <p>Our journey began at <strong>TechSolutions Inc.</strong>, where we witnessed a high-performing team practicing Scrum. The emphasis on iterative development and constant feedback was palpable. Later, at <strong>CloudNet Analytics</strong>, we dove deep into AWS and Azure, exploring how they power global applications with incredible scalability and resilience. The key takeaway was the symbiotic relationship between agile practices and cloud-native architecture.</p>
+        </div>
+    </div>
+    <div id="day2-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Day 2: Cybersecurity & Big Data</h2>
+            <p>At <strong>SecureCore</strong>, we were given a tour of their Security Operations Center (SOC). The live threat monitoring and rapid response simulations were eye-opening, highlighting the critical importance of proactive defense mechanisms in today's digital landscape. The afternoon at <strong>DataWise Innovations</strong> was equally impressive, with demonstrations of their machine learning models processing terabytes of data to predict market trends. This day underscored the dual pillars of modern IT: protection and prediction.</p>
+        </div>
+    </div>
+    <div id="day3-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Day 3: UI/UX Innovation & Future Trends</h2>
+            <p>The final day was a masterclass in user-centric design at <strong>PixelPerfect Studios</strong>. We participated in a design thinking workshop, learning how empathy maps and user journey mapping lead to intuitive and engaging products. Our tour concluded at <strong>Innovatech's</strong> R&D lab, where we got a sneak peek at their work in quantum computing and augmented reality. It was a fitting end, leaving us inspired and excited for the future of technology.</p>
+        </div>
+    </div>
+    <div id="modal-backdrop"></div>
+
+    <script src="main.js"></script>
+    <a href="#" class="back-to-top" aria-label="Back to top">↑</a>
+
+    <script>
+        // Add stagger animation to speaker cards
+        const speakerCards = document.querySelectorAll('.speaker-card');
+        speakerCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

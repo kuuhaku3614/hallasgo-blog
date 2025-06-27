@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciao's Web Blog</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="#" class="nav-logo">BSCS Tour 2025</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="speakers.html" class="nav-link">Speakers</a></li>
+                <li class="nav-item"><a href="venue.html" class="nav-link">Venue</a></li>
+                <li class="nav-item"><a href="schedule.html" class="nav-link">Schedules</a></li>
+                <li class="nav-item">
+                    <button id="theme-switcher" class="theme-button">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+    
+    <div id="particles-js"></div>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">BSCS Educational Tour</h1>
+                <p class="creator-name">By Gerby Hallasgo</p>
+                <a href="#blog" class="cta-button">Explore Our Journey</a>
+            </div>
+        </section>
+
+        <section class="engagement-section">
+            <div class="engagement-container">
+                <div class="engagement-caption animate-on-scroll">
+                    <h3>Immersive Exploration</h3>
+                    <p>Dive into our 3-day exploration of cutting-edge IT companies.</p>
+                </div>
+                <div class="engagement-caption animate-on-scroll">
+                    <h3>Innovation & Insights</h3>
+                    <p>Discover innovation, technology, and industry insights from our visits.</p>
+                </div>
+                <div class="engagement-caption animate-on-scroll">
+                    <h3>Exclusive Access</h3>
+                    <p>Join us as we uncover the future of technology behind the scenes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="blog-posts-section">
+            <h2 class="section-title animate-on-scroll">Our 5-Day Itinerary</h2>
+            <div class="blog-container">
+                <article class="blog-card animate-on-scroll">
+                    <div class="card-carousel" data-carousel>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="uploads/Foundever.jpg" alt="Foundever Office Interior" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/foundever2.jpg" alt="Foundever Team Collaboration" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/foundever3.jpg" alt="Foundever Work Environment" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/foundever4.jpg" alt="Foundever Presentation" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/foundever5.jpg" alt="Foundever Group Photo" class="lazy"></div>
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Day 1: Foundever PH</h3>
+                        <p class="card-date">June 9, 2025</p>
+                        <p class="card-caption">What an eye-opening visit for our WMSU CCS BSCS students at Foundever PH! We explored how a leading customer experience company leverages cutting-edge tech. Discussions with their teams highlighted crucial topics like data privacy and agile methodology. An IBPAP overview by Ms. Zoe Diaz De Rivera then revealed the immense opportunities in the IT-BPM sector, reminding us it's "not just about call centers—it's about innovation and technology." This visit truly equipped us for the digital economy!</p>
+                        <a href="#" class="read-more" data-modal-target="day1-modal">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card animate-on-scroll">
+                     <div class="card-carousel" data-carousel>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="uploads/google.jpg" alt="google" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/google1.jpg" alt="google" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/google2.jpg" alt="google" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/google3.jpg" alt="google" class="lazy"></div>
+                             <div class="carousel-item"><img src="uploads/google4.jpg" alt="google" class="lazy"></div>
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Day 1: Google PH</h3>
+                        <p class="card-date">June 9, 2025</p>
+                        <p class="card-caption">We just experienced an exciting and insightful company visit to Google Philippines! WMSU CCS BSCS students gained firsthand exposure to a global tech giant. Atty. Yves Gonzalez guided us through Google's mission, AI advancements, and digital policy initiatives in the Philippines. Touring their innovative workplace showed us the culture behind groundbreaking tech, inspiring us to dream bigger as future developers and innovators.</p>
+                        <a href="#" class="read-more" data-modal-target="day2-modal">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card animate-on-scroll">
+                     <div class="card-carousel" data-carousel>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="uploads/teleperformace.jpg" alt="Teleperformance" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/teleperformace1.jpg" alt="Teleperformance" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/teleperformace2.jpg" alt="Teleperformance" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/teleperformace3.jpg" alt="Teleperformance" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/teleperformace4.jpg" alt="Teleperformance" class="lazy"></div>
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Day 2: Teleperformance</h3>
+                        <p class="card-date">June 10, 2025</p>
+                        <p class="card-caption">We recently gained fantastic insights into the IT-BPM industry during our visit to Teleperformance Philippines! WMSU CCS BSCS students heard from Brand Marketing Specialist Beatrice Grace Bonjibod about TP's innovative services and strong focus on diversity. We explored their Innovation Hub, seeing cutting-edge tech in action, and even participated in mock interviews with the HR team. This experience was a practical look at career readiness and the evolving world of digital business.</p>
+                        <a href="#" class="read-more" data-modal-target="day3-modal">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card animate-on-scroll">
+                    <div class="card-carousel" data-carousel>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="uploads/kollab.png" alt="kollab" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/kollab1.jpg" alt="kollab" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/kollab2.jpg" alt="kollab" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/kollab3.jpg" alt="kollab" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/kollab4.jpg" alt="kollab" class="lazy"></div>
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Day 2: Kollab</h3>
+                        <p class="card-date">June 10, 2025</p>
+                        <p class="card-caption">Our recent visit to Kollab in Mandaluyong City gave WMSU CCS BSCS students invaluable real-world tech insights! We were welcomed by Chief Scientist Ralph Vincent Regalado, then learned about company culture from Jazmine Calma, and "Applied AI" from Toni-Jan Keith Monserrat. Miguel Siriban even shared tips on building a dev portfolio to get hired. This immersive experience truly helped us envision our future in tech!</p>
+                        <a href="#" class="read-more" data-modal-target="day1-modal">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card animate-on-scroll">
+                     <div class="card-carousel" data-carousel>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="uploads/adb.jpg" alt="Asian Development Bank" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/adb1.jpg" alt="Asian Development Bank" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/adb2.jpg" alt="Asian Development Bank" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/adb3.jpg" alt="Asian Development Bank" class="lazy"></div>
+                             <div class="carousel-item"><img src="uploads/adb4.jpg" alt="Asian Development Bank" class="lazy"></div>
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Day 3: Asian Development Bank</h3>
+                        <p class="card-date">June 11, 2025</p>
+                        <p class="card-caption">A truly enriching experience unfolded during our recent industry exposure program at the Asian Development Bank headquarters. WMSU's College of Computing Studies collaborated with CXC and IBPAP to make this possible. We toured ADB's facilities, connected with IT leaders, and demonstrated our "RePay" project, which was very well received. This visit underscored the practical application of IT in development work and illuminated exciting professional pathways within global organizations for aspiring tech professionals.</p>
+                        <a href="#" class="read-more" data-modal-target="day2-modal">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card animate-on-scroll">
+                     <div class="card-carousel" data-carousel>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active"><img src="uploads/microsourcing.jpg" alt="MicroSourcing" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/microsourcing1.jpg" alt="MicroSourcing" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/microsourcing2.jpg" alt="MicroSourcing" class="lazy"></div>
+                            <div class="carousel-item"><img src="uploads/microsourcing3.jpg" alt="MicroSourcing" class="lazy"></div>
+                             <div class="carousel-item"><img src="uploads/microsourcing4.jpg" alt="MicroSourcing" class="lazy"></div>
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Day 3: MicroSourcing</h3>
+                        <p class="card-date">June 11, 2025</p>
+                        <p class="card-caption">Our recent visit to MicroSourcing's headquarters in Quezon City proved immensely valuable. This comprehensive immersion provided a direct insight into the vibrant operations and dynamic work culture of a leading IT-BPM solutions provider. We were privileged to hear from Ms. Heidee Enriquez, CEO, whose insights on digital skills deeply resonated. The practical LinkedIn workshop also significantly enhanced our students' professional preparedness, reinforcing our commitment to industry-ready graduates.</p>
+                        <a href="#" class="read-more" data-modal-target="day3-modal">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <h2 class="section-title">Our Leisure Journey Day 4-5</h2>
+            <div class="gallery-container">
+                <!-- Tagaytay Cluster -->
+                <div class="gallery-cluster" data-cluster="tagaytay">
+                    <div class="cluster-image">
+                        <img src="uploads/tagaytay4.jpg" alt="Tagaytay Scenery 1" data-caption="Day 4">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/tagaytay3.jpg" alt="Tagaytay Scenery 2" data-caption="Day 4">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/tagaytay2.jpg" alt="Tagaytay Scenery 3" data-caption="Day 4">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/tagaytay1.jpg" alt="Tagaytay Scenery 2" data-caption="Day 4">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/tagaytay.jpg" alt="Tagaytay Scenery 3" data-caption="Day 4">
+                    </div>
+                    <div class="cluster-label">
+                        Tagaytay
+                        <span class="cluster-count">3</span>
+                    </div>
+                </div>
+
+                <!-- Baguio Cluster -->
+                <div class="gallery-cluster" data-cluster="baguio">
+                    <div class="cluster-image">
+                        <img src="uploads/baguio.jpg" alt="Baguio Scenery 1" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/baguio1.jpg" alt="Baguio Scenery 2" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/baguio2.jpg" alt="Baguio Scenery 3" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/baguio3.jpg" alt="Baguio Scenery 2" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/baguio4.jpg" alt="Baguio Scenery 3" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/baguio5.jpg" alt="Baguio Scenery 2" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-image">
+                        <img src="uploads/baguio6.jpg" alt="Baguio Scenery 3" data-caption="Day 5">
+                    </div>
+                    <div class="cluster-label">
+                        Baguio
+                        <span class="cluster-count">3</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Carousel -->
+        <div class="modal-overlay" id="carousel-modal">
+            <div class="carousel-modal">
+                <div class="carousel-header">
+                    <h3 class="carousel-title" id="modal-title">Gallery</h3>
+                    <button class="modal-close" id="modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carousel-track">
+                        <!-- Slides will be dynamically inserted here -->
+                    </div>
+                    <button class="carousel-btn prev" id="prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next" id="next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="carousel-dots" id="carousel-dots">
+                        <!-- Dots will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="partner" class="partner-feature-section">
+            <div class="partner-container animate-on-scroll">
+                <div class="partner-image">
+                    <img src="uploads/djm.jpg" alt="DJM Travel and Tour Services Team">
+                </div>
+                <div class="partner-content">
+                    <h2 class="partner-headline">Our Exceptional Journey Partner</h2>
+                    <h3>DJM Travel and Tour Services, Inc.</h3>
+                    <p>Behind every successful corporate expedition lies meticulous planning and flawless execution. DJM Travel and Tour Services, Inc. transformed our IT company exploration into an unforgettable experience through their unparalleled expertise and dedication to excellence. From seamless logistics coordination to insider access arrangements, they curated every detail to perfection. Discover how DJM Travel and Tour Services, Inc. can elevate your next corporate journey and create lasting professional memories that go beyond expectations.</p>
+                    <a href="https://www.instagram.com/djm_mnl/" class="partner-cta">Partner with DJM Travel</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h4>BSCS Tour 2025</h4>
+                <p>Documenting our exploration of the tech industry's leading innovators.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="speakers.html">Speakers</a></li>
+                    <li><a href="venue.html">Venue</a></li>
+                    <li><a href="schedule.html">Schedules</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Connect With Me</h4>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f">acebook</i></a>
+                <a href="#" aria-label="LinkedIn">Linked<i class="fab fa-linkedin-in"></i></a>
+            </div>
+             <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>Email: hallasgogerby@gmail.com</p>
+                <p>Phone: +63 956 2307 646</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 WMSU BSCS. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <a href="#" class="back-to-top" aria-label="Back to top">↑</a>
+
+    <div id="day1-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2></h2>
+            <p></p>
+        </div>
+    </div>
+
+    <div id="day2-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2></h2>
+            <p></p>
+        </div>
+    </div>
+
+    <div id="day3-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2></h2>
+            <p></p>
+        </div>
+    </div>
+    <div id="modal-backdrop"></div>
+
+    <script src="main.js"></script>
+    <script src="carousel.js"></script>
+
+</body>
+</html>

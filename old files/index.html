@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSCS Educational Tour - A Developer's Blog</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        :root {
+            --bg-primary-dark: #0a0a0a;
+            --bg-secondary-dark: #1a1a1a;
+            --text-primary-dark: #ffffff;
+            --text-secondary-dark: #b0b0b0;
+            --accent-primary: #00ff88;
+            --accent-secondary: #0088ff;
+            --glass-bg-dark: rgba(26, 26, 26, 0.5);
+            --glass-border-dark: rgba(255, 255, 255, 0.1);
+
+            --bg-primary-light: #f5f5f7;
+            --bg-secondary-light: #ffffff;
+            --text-primary-light: #1d1d1f;
+            --text-secondary-light: #515154;
+            --glass-bg-light: rgba(255, 255, 255, 0.7);
+            --glass-border-light: rgba(0, 0, 0, 0.1);
+            
+            --shadow-glow: 0 0 40px rgba(0, 255, 136, 0.2);
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body.light-theme {
+            --bg-primary: var(--bg-primary-light);
+            --bg-secondary: var(--bg-secondary-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --glass-bg: var(--glass-bg-light);
+            --glass-border: var(--glass-border-light);
+        }
+
+        body:not(.light-theme) {
+            --bg-primary: var(--bg-primary-dark);
+            --bg-secondary: var(--bg-secondary-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --glass-bg: var(--glass-bg-dark);
+            --glass-border: var(--glass-border-dark);
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .section {
+            padding: 6rem 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: transparent;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: background-color 0.3s;
+        }
+        .navbar-brand {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent-primary) !important;
+        }
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-primary) !important;
+        }
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Header */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        .header-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        /* Schedule Section */
+        .day-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .day-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .day-btn.active {
+            background: var(--accent-primary);
+            color: #0a0a0a;
+            box-shadow: var(--shadow-glow);
+        }
+        .company-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .carousel-item img {
+            height: 250px;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        
+        /* Speakers Section */
+        .speaker-card {
+            text-align: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        .speaker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+        .speaker-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 4px solid var(--accent-primary);
+        }
+        .speaker-name {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+        .speaker-company {
+            color: var(--accent-secondary);
+            font-family: var(--font-mono);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        /* Modal */
+        #mapModal .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+        }
+        #map { height: 400px; width: 100%; border-radius: 8px; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <canvas id="particles-canvas"></canvas>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">&lt;WMSU Tour /&gt;</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#speakers">Speakers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#venue" id="venue-link">Venue</a></li>
+                </ul>
+                <button class="theme-toggle ms-3" id="themeToggle"><i class="fas fa-sun"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="section">
+        <div class="container">
+            <h1 class="header-title">BSCS Educational Tour</h1>
+            <p class="header-subtitle">A 3-day journey of company visits, activities, lectures, and workshops.</p>
+        </div>
+    </header>
+
+    <section id="schedule" class="section">
+        <div class="container">
+            <h2 class="section-title">Companies Visited</h2>
+            <div class="day-switcher" id="day-switcher">
+                <button class="btn day-btn active" data-day="1">Day 1</button>
+                <button class="btn day-btn" data-day="2">Day 2</button>
+                <button class="btn day-btn" data-day="3">Day 3</button>
+            </div>
+            <div id="schedule-content">
+                </div>
+        </div>
+    </section>
+
+    <section id="speakers" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Esteemed Speakers</h2>
+            <div class="row g-4" id="speakers-content">
+                </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 WMSU BSCS. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <div class="modal fade" id="mapModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Company Locations</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const eventData = {
+            day1: [
+                {
+                    id: 6,
+                    company: "Google Philippines",
+                    location: "BGC, Taguig City",
+                    coords: [14.5546, 121.0454],
+                    description: "A deep dive into Google's innovation, culture, and public policy, hosted by Atty. Yves Gonzalez. Students explored the state-of-the-art office and learned about AI, digital inclusion, and ethical governance in tech.",
+                    images: [
+                        "https://placehold.co/800x400/4285F4/ffffff?text=Google+1",
+                        "https://placehold.co/800x400/EA4335/ffffff?text=Google+2",
+                        "https://placehold.co/800x400/FBBC05/ffffff?text=Google+3",
+                        "https://placehold.co/800x400/34A853/ffffff?text=Google+4",
+                        "https://placehold.co/800x400/6C2DC7/ffffff?text=Google+5"
+                    ]
+                },
+                {
+                    id: 7,
+                    company: "Foundever PH",
+                    location: "Technopoint Building, Pasig City",
+                    coords: [14.5764, 121.0851],
+                    description: "An immersive look into the world of customer experience (CX) solutions. The visit to Foundever highlighted the role of AI, cloud computing, and data analytics in transforming digital customer service.",
+                    images: [
+                        "https://placehold.co/800x400/FF69B4/ffffff?text=Foundever+1",
+                        "https://placehold.co/800x400/FF8C00/ffffff?text=Foundever+2",
+                        "https://placehold.co/800x400/1E90FF/ffffff?text=Foundever+3",
+                        "https://placehold.co/800x400/32CD32/ffffff?text=Foundever+4",
+                        "https://placehold.co/800x400/9932CC/ffffff?text=Foundever+5"
+                    ]
+                }
+            ],
+            day2: [
+                {
+                    id: 4,
+                    company: "Kollab",
+                    location: "Greenfield Tower, Mandaluyong City",
+                    coords: [14.5833, 121.0583],
+                    description: "An engaging session on digital innovation and collaborative technology. Speakers covered topics from Applied AI and QA culture to building a standout developer portfolio, providing practical career guidance.",
+                    images: [
+                        "https://placehold.co/800x400/FF4500/ffffff?text=Kollab+1",
+                        "https://placehold.co/800x400/20B2AA/ffffff?text=Kollab+2",
+                        "https://placehold.co/800x400/F0E68C/000000?text=Kollab+3",
+                        "https://placehold.co/800x400/6A5ACD/ffffff?text=Kollab+4",
+                        "https://placehold.co/800x400/B22222/ffffff?text=Kollab+5"
+                    ]
+                },
+                {
+                    id: 5,
+                    company: "Teleperformance",
+                    location: "SM Aura, BGC, Taguig City",
+                    coords: [14.5453, 121.0573],
+                    description: "A glimpse into innovation, inclusivity, and industry readiness at a global leader in business services. The visit included a tour of the Innovation Hub and mock interviews with the HR team.",
+                    images: [
+                        "https://placehold.co/800x400/00008B/ffffff?text=TP+1",
+                        "https://placehold.co/800x400/483D8B/ffffff?text=TP+2",
+                        "https://placehold.co/800x400/8A2BE2/ffffff?text=TP+3",
+                        "https://placehold.co/800x400/00BFFF/ffffff?text=TP+4",
+                        "https://placehold.co/800x400/5F9EA0/ffffff?text=TP+5"
+                    ]
+                }
+            ],
+            day3: [
+                 {
+                    id: 2,
+                    company: "MicroSourcing",
+                    location: "Eastwood, Quezon City",
+                    coords: [14.6091, 121.0822],
+                    description: "Gaining real-world exposure to the IT-BPM industry. The program included a welcome from the CEO, a facility tour, and a hands-on LinkedIn workshop to build professional online brands.",
+                     images: [
+                        "https://placehold.co/800x400/6495ED/ffffff?text=MS+1",
+                        "https://placehold.co/800x400/DC143C/ffffff?text=MS+2",
+                        "https://placehold.co/800x400/00FFFF/000000?text=MS+3",
+                        "https://placehold.co/800x400/BDB76B/ffffff?text=MS+4",
+                        "https://placehold.co/800x400/FF8C00/ffffff?text=MS+5"
+                    ]
+                },
+                {
+                    id: 3,
+                    company: "Asian Development Bank",
+                    location: "Mandaluyong City",
+                    coords: [14.5843, 121.0583],
+                    description: "A unique opportunity to understand the role of IT in international development. The visit featured a fireside chat with IT directors, a tour of the headquarters, and a student project showcase.",
+                    images: [
+                        "https://placehold.co/800x400/006400/ffffff?text=ADB+1",
+                        "https://placehold.co/800x400/8B0000/ffffff?text=ADB+2",
+                        "https://placehold.co/800x400/FFD700/000000?text=ADB+3",
+                        "https://placehold.co/800x400/4B0082/ffffff?text=ADB+4",
+                        "https://placehold.co/800x400/008080/ffffff?text=ADB+5"
+                    ]
+                }
+            ]
+        };
+        
+        const speakersData = [
+            { name: "Atty. Yves Gonzalez", company: "Google Philippines", image: "https://placehold.co/200x200/4285F4/ffffff?text=YG" },
+            { name: "Ms. Zoe Diaz De Rivera", company: "Foundever PH (IBPAP)", image: "https://placehold.co/200x200/FF69B4/ffffff?text=ZDR" },
+            { name: "Ralph Vincent Regalado", company: "Kollab", image: "https://placehold.co/200x200/FF4500/ffffff?text=RVR" },
+            { name: "Jazmine Calma", company: "Kollab", image: "https://placehold.co/200x200/20B2AA/ffffff?text=JC" },
+            { name: "Toni-Jan Keith Monserrat", company: "Kollab", image: "https://placehold.co/200x200/6A5ACD/ffffff?text=TJKM" },
+            { name: "Miguel Siriban", company: "Kollab", image: "https://placehold.co/200x200/B22222/ffffff?text=MS" },
+            { name: "Beatrice Grace Bonjibod", company: "Teleperformance", image: "https://placehold.co/200x200/00008B/ffffff?text=BGB" },
+            { name: "Heidee Enriquez", company: "MicroSourcing", image: "https://placehold.co/200x200/6495ED/ffffff?text=HE" },
+            { name: "ADB IT Directors", company: "Asian Development Bank", image: "https://placehold.co/200x200/006400/ffffff?text=ADB" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('light-theme');
+                const isLight = body.classList.contains('light-theme');
+                themeToggle.innerHTML = isLight ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            });
+            if (localStorage.getItem('theme') === 'light') {
+                body.classList.add('light-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+
+            // Schedule Section Logic
+            const scheduleContent = document.getElementById('schedule-content');
+            const daySwitcher = document.getElementById('day-switcher');
+            
+            function renderSchedule(day) {
+                const dayKey = `day${day}`;
+                const events = eventData[dayKey] || [];
+                scheduleContent.innerHTML = `
+                    <div class="row g-4">
+                        ${events.map(event => `
+                            <div class="col-lg-6">
+                                <div class="company-card">
+                                    <div id="carousel-${event.id}" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            ${event.images.map((img, index) => `
+                                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                                    <img src="${img}" class="d-block w-100" alt="${event.company} visit">
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${event.id}" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-${event.id}" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="card-title">${event.company}</h3>
+                                        <p class="card-text text-secondary">${event.description}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            daySwitcher.addEventListener('click', (e) => {
+                if(e.target.classList.contains('day-btn')) {
+                    document.querySelector('.day-btn.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    renderSchedule(e.target.dataset.day);
+                }
+            });
+
+            // Speakers Section Logic
+            const speakersContent = document.getElementById('speakers-content');
+            speakersContent.innerHTML = speakersData.map(speaker => `
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="speaker-card">
+                        <img src="${speaker.image}" alt="${speaker.name}" class="speaker-img">
+                        <h4 class="speaker-name">${speaker.name}</h4>
+                        <p class="speaker-company">${speaker.company}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Particles.js Background
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray;
+
+            function Particle(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color;
+            }
+            Particle.prototype.draw = function() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color; ctx.fill();
+            }
+            Particle.prototype.update = function() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX; this.y += this.directionY;
+                this.draw();
+            }
+
+            function initParticles() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * .4) - .2;
+                    let directionY = (Math.random() * .4) - .2;
+                    let color = 'rgba(0, 255, 136, 0.5)';
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function animateParticles() {
+                requestAnimationFrame(animateParticles);
+                ctx.clearRect(0,0,innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+            }
+            
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth; canvas.height = innerHeight;
+                initParticles();
+            });
+
+            // Map Modal Logic
+            const mapModal = new bootstrap.Modal(document.getElementById('mapModal'));
+            const venueLink = document.getElementById('venue-link');
+            let map = null;
+
+            venueLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                mapModal.show();
+            });
+
+            document.getElementById('mapModal').addEventListener('shown.bs.modal', () => {
+                if (map) map.remove();
+                map = L.map('map').setView([14.58, 121.05], 11); // Centered on Metro Manila
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+
+                const allEvents = [...eventData.day1, ...eventData.day2, ...eventData.day3];
+                allEvents.forEach(event => {
+                    L.marker(event.coords).addTo(map)
+                        .bindPopup(`<b>${event.company}</b><br>${event.location}`);
+                });
+
+                map.invalidateSize();
+            });
+
+            // Initial render
+            initParticles();
+            animateParticles();
+            renderSchedule(1);
+        });
+    </script>
+</body>
+</html>
